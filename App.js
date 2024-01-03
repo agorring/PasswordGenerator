@@ -1,4 +1,4 @@
-import { SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View, TextInput} from 'react-native';
+import { SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View, TextInput, Image} from 'react-native';
 import * as yup from "yup"
 import BouncyCheckbox from 'react-native-bouncy-checkbox';
 import { Formik } from 'formik';
@@ -69,12 +69,19 @@ export default function App() {
       <SafeAreaView style={styles.appContainer}>
         <View style={styles.formContainer}>
           <Text style={styles.title}>Password Generator</Text>
+          <Image source={require('./assets/password.png')}style={styles.image}/>
+          
+          <View style={styles.passwordBox}>
+            {isPassGenerated ? (
+            <View style={[styles.card, styles.cardElevated]}>
+              <Text selectable style={styles.generatedPassword}>{password}</Text>
+            </View>
+          ) : null}
+          </View>
           <Formik
        initialValues={{ passwordLength: "" }}
         validationSchema={PasswordSchema}
         onSubmit={ values => {
-          console.log("hi")
-          console.log(values)
           generatePasswordString(Number(values.passwordLength))
         }}
      >
@@ -135,24 +142,21 @@ export default function App() {
        )}
           </Formik>
         </View>
-        {isPassGenerated ? (
-          <View style={[styles.card, styles.cardElevated]}>
-            <Text style={styles.subtitle}>Result:</Text>
-            <Text style={styles.description}>Long press to copy</Text>
-            <Text selectable style={styles.generatedPassword}>{password}</Text>
-          </View>
-        ) : null}
+        <Text style={styles.description}>Long press to copy</Text>
       </SafeAreaView>
     </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  appContainer: {flex: 1, flexDirection: "column"},
-  formContainer: {},
-  title: {},
+  appContainer: {flex: 1, flexDirection: "column", marginTop: 75},
+  formContainer: {flex: 1, alignItems: "center"},
+  title: {fontSize: 32, fontWeight: "bold" },
+  image: {height: 100, width: 100, marginTop: 40, marginBottom: 30},
+  passwordBox: {marginBottom: 50, borderColor: "#EEEEEE", borderWidth: 2, width: 300, height: 60, borderRadius: 10, alignItems: "center", justifyContent: "center"},
   inputWrapper: {flex: 1, flexDirection: "row"},
   heading: {},
   primaryBtn: {},
-  primaryBtnText: {}
+  primaryBtnText: {},
+
 });
